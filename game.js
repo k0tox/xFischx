@@ -7,7 +7,6 @@ AFRAME.registerComponent('day-night-cycle', {
   tick(time, delta) {
     const sun = document.querySelector('#sunLight');
     const moon = document.querySelector('#moonLight');
-    if (!sun || !moon) return;
     const d = delta / 1000;
     this.angle += d * this.data.speed;
     sun.object3D.rotation.x = this.angle;
@@ -16,99 +15,75 @@ AFRAME.registerComponent('day-night-cycle', {
 });
 
 // =====================
-// Basic game state
+// Game state
 // =====================
 let money = 0;
 let level = 1;
+let xp = 0;
+
 let currentRod = "Driftwood Rod";
 let currentBait = "Glowworms";
 let currentTotem = "Totem of Fortune";
 
-const moneyEl = document.getElementById("money");
-const levelEl = document.getElementById("level");
-const weatherEl = document.getElementById("weather");
-const rodNameEl = document.getElementById("rodName");
-
 function updateHUD() {
-  moneyEl.textContent = "Money: " + money;
-  levelEl.textContent = "Level: " + level;
-  rodNameEl.textContent = "Rod: " + currentRod;
+  document.getElementById("money").textContent = "Money: " + money;
+  document.getElementById("level").textContent = "Level: " + level;
+  document.getElementById("rodName").textContent = "Rod: " + currentRod;
 }
 updateHUD();
 
 // =====================
-// Weather system
+// Weather
 // =====================
 const weatherTypes = ["Clear", "Rain", "Storm", "Fog"];
 let currentWeather = "Clear";
 
 function randomWeather() {
   currentWeather = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
-  weatherEl.textContent = "Weather: " + currentWeather;
+  document.getElementById("weather").textContent = "Weather: " + currentWeather;
 }
 randomWeather();
 setInterval(randomWeather, 60000);
 
 // =====================
-// Data: rods, bait, fish
-// (expand these lists to match Fisch counts)
+// Rods
 // =====================
 const rods = [
-  "Driftwood Rod",
-  "Ironline Rod",
-  "Stormcaster Rod",
-  "Crystal Thread Rod",
-  "Abyss Piercer Rod",
-  "Solarforge Rod",
-  "Lunarweave Rod",
-  "Frostbite Rod",
-  "Emberflare Rod"
+  { name: "Driftwood Rod", rarityBoost: 1.00 },
+  { name: "Ironline Rod", rarityBoost: 1.05 },
+  { name: "Stormcaster Rod", rarityBoost: 1.10 },
+  { name: "Crystal Thread Rod", rarityBoost: 1.15 },
+  { name: "Abyss Piercer Rod", rarityBoost: 1.20 },
+  { name: "Solarforge Rod", rarityBoost: 1.25 },
+  { name: "Lunarweave Rod", rarityBoost: 1.30 },
+  { name: "Frostbite Rod", rarityBoost: 1.35 },
+  { name: "Emberflare Rod", rarityBoost: 1.40 }
 ];
 
-const baitList = [
-  "Glowworms",
-  "Iron Minnows",
-  "Storm Larvae",
-  "Crystal Shrimp",
-  "Abyssal Grubs"
-];
-
+// =====================
+// Fish list
+// =====================
 const fishList = [
-  { name: "Sunscale Trout", rarity: "common" },
-  { name: "Moonfin Eel", rarity: "uncommon" },
-  { name: "Stormback Ray", rarity: "rare" },
-  { name: "Crystal Carp", rarity: "legendary" },
-  { name: "Abyssal Leviathan", rarity: "mythic" }
+  { name: "Sunscale Trout", rarity: "common", sellValue: 10, xp: 5 },
+  { name: "Pebble Minnow", rarity: "common", sellValue: 12, xp: 6 },
+  { name: "Reedflicker", rarity: "common", sellValue: 15, xp: 7 },
+
+  { name: "Moonfin Eel", rarity: "uncommon", sellValue: 25, xp: 12 },
+  { name: "Stormtail Perch", rarity: "uncommon", sellValue: 30, xp: 14 },
+  { name: "Crystal Darter", rarity: "uncommon", sellValue: 35, xp: 16 },
+
+  { name: "Stormback Ray", rarity: "rare", sellValue: 75, xp: 30 },
+  { name: "Frostjaw Salmon", rarity: "rare", sellValue: 90, xp: 35 },
+  { name: "Ember Pike", rarity: "rare", sellValue: 110, xp: 40 },
+
+  { name: "Crystal Carp", rarity: "legendary", sellValue: 250, xp: 80 },
+  { name: "Thunderfin Barracuda", rarity:  "legendary", sellValue: 300, xp: 90 },
+  { name: "Glacier Manta", rarity: "legendary", sellValue: 350, xp: 100 },
+
+  { name: "Abyssal Leviathan", rarity: "mythic", sellValue: 1000, xp: 300 },
+  { name: "Solar Serpent", rarity: "mythic", sellValue: 1200, xp: 350 },
+  { name: "Eclipse Phantom", rarity: "mythic", sellValue: 1500, xp: 400 }
 ];
-
-// Rod / bait / totem bonuses (structure like Fisch)
-const rodBonuses = {
-  "Driftwood Rod": 1.0,
-  "Ironline Rod": 1.05,
-  "Stormcaster Rod": 1.1,
-  "Crystal Thread Rod": 1.15,
-  "Abyss Piercer Rod": 1.2,
-  "Solarforge Rod": 1.25,
-  "Lunarweave Rod": 1.3,
-  "Frostbite Rod": 1.35,
-  "Emberflare Rod": 1.4
-};
-
-const baitBonuses = {
-  "Glowworms": 1.0,
-  "Iron Minnows": 1.05,
-  "Storm Larvae": 1.1,
-  "Crystal Shrimp": 1.15,
-  "Abyssal Grubs": 1.2
-};
-
-const totemBonuses = {
-  "Totem of Fortune": 1.05,
-  "Totem of Storms": 1.1,
-  "Totem of Depth": 1.15,
-  "Totem of Swiftness": 1.2,
-  "Totem of Calm Waters": 1.25
-};
 
 // =====================
 // Horizontal fishing minigame
@@ -127,7 +102,6 @@ const fishMarkerH = document.getElementById("fishMarkerH");
 const catchZoneH = document.getElementById("catchZoneH");
 const progressInnerH = document.getElementById("progressInnerH");
 
-// Rarity settings (tune to feel like Fisch)
 const raritySettings = {
   common:    { speed: 1.2, drain: 0.4, gain: 0.7, movement: "smooth" },
   uncommon:  { speed: 1.5, drain: 0.6, gain: 0.7, movement: "smooth" },
@@ -140,7 +114,7 @@ function startFishingH(rarity = "common") {
   fishingH = true;
   fishingUIH.classList.remove("hidden");
 
-  rarityConfig = raritySettings[rarity] || raritySettings.common;
+  rarityConfig = raritySettings[rarity];
   fishSpeedH = rarityConfig.speed;
   fishMovementType = rarityConfig.movement;
 
@@ -157,24 +131,18 @@ function endFishingH(success) {
 
   if (success) {
     const caught = fishList[Math.floor(Math.random() * fishList.length)];
-    money += Math.floor(Math.random() * 50) + 10;
+    money += caught.sellValue;
+    xp += caught.xp;
     updateHUD();
-    alert("You caught a " + caught.name + " (" + caught.rarity + ")!");
+    alert("You caught a " + caught.name + "!");
   }
 }
 
 function moveFishPattern() {
-  if (!rarityConfig) return;
-
-  if (fishMovementType === "smooth") {
-    fishX += fishSpeedH;
-  } else if (fishMovementType === "jitter") {
-    fishX += fishSpeedH + (Math.random() * 2 - 1);
-  } else if (fishMovementType === "drift") {
-    fishX += fishSpeedH * 0.7 + Math.sin(Date.now() / 200) * 2;
-  } else if (fishMovementType === "chaos") {
-    fishX += fishSpeedH * (Math.random() * 2);
-  }
+  if (fishMovementType === "smooth") fishX += fishSpeedH;
+  if (fishMovementType === "jitter") fishX += fishSpeedH + (Math.random() * 2 - 1);
+  if (fishMovementType === "drift") fishX += fishSpeedH * 0.7 + Math.sin(Date.now() / 200) * 2;
+  if (fishMovementType === "chaos") fishX += fishSpeedH * (Math.random() * 2);
 
   if (fishX <= 0 || fishX >= 280) fishSpeedH *= -1;
 }
@@ -184,61 +152,35 @@ function fishingLoopH() {
 
   moveFishPattern();
 
-  // Catch zone movement
-  if (mouseDown) {
-    catchX += 3;
-  } else {
-    catchX -= 3;
-  }
+  if (mouseDown) catchX += 3;
+  else catchX -= 3;
+
   catchX = Math.max(0, Math.min(240, catchX));
 
   fishMarkerH.style.left = fishX + "px";
   catchZoneH.style.left = catchX + "px";
 
-  // Overlap check
-  const overlap =
-    catchX < fishX + 20 &&
-    catchX + 60 > fishX;
+  const overlap = catchX < fishX + 20 && catchX + 60 > fishX;
 
-  const rodBoost = rodBonuses[currentRod] || 1;
-  const baitBoost = baitBonuses[currentBait] || 1;
-  const totemBoost = totemBonuses[currentTotem] || 1;
-  const totalBoost = rodBoost * baitBoost * totemBoost;
-
-  if (overlap) {
-    progressH += rarityConfig.gain * totalBoost;
-  } else {
-    progressH -= rarityConfig.drain;
-  }
+  if (overlap) progressH += rarityConfig.gain;
+  else progressH -= rarityConfig.drain;
 
   progressH = Math.max(0, Math.min(100, progressH));
   progressInnerH.style.width = progressH + "%";
 
-  if (progressH >= 100) {
-    endFishingH(true);
-    return;
-  }
+  if (progressH >= 100) return endFishingH(true);
 
   requestAnimationFrame(fishingLoopH);
 }
 
-// Mouse control
-document.addEventListener("mousedown", () => {
-  if (fishingH) mouseDown = true;
-});
+document.addEventListener("mousedown", () => { if (fishingH) mouseDown = true; });
+document.addEventListener("mouseup", () => { if (fishingH) mouseDown = false; });
 
-document.addEventListener("mouseup", () => {
-  if (fishingH) mouseDown = false;
-});
-
-// Click to start fishing when near spot
 document.addEventListener("click", () => {
   if (fishingH) return;
 
   const rig = document.querySelector("#rig");
   const fishingSpot = document.querySelector("#fishingSpot");
-
-  if (!rig || !fishingSpot) return;
 
   const pos = rig.object3D.position;
   const spotPos = fishingSpot.object3D.position;
@@ -246,7 +188,6 @@ document.addEventListener("click", () => {
   const dist = pos.distanceTo(spotPos);
 
   if (dist < 5) {
-    // Pick a random fish and use its rarity
     const chosen = fishList[Math.floor(Math.random() * fishList.length)];
     startFishingH(chosen.rarity);
   }
