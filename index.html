@@ -119,20 +119,39 @@
       <!-- Sky -->
       <a-sky color="#87CEEB"></a-sky>
 
-      <!-- Ocean (huge) -->
+      <!-- Ocean -->
       <a-entity geometry="primitive: plane; width: 2000; height: 2000"
                 rotation="-90 0 0"
                 material="color: #1e90ff; opacity: 0.95">
       </a-entity>
 
-      <!-- ===== Spawn Island (colorful, Bee Swarm–style vibe) ===== -->
+      <!-- ===== Spawn Island (designed, not slab) ===== -->
       <a-entity render-distance="maxDistance: 600">
         <!-- Main island -->
         <a-entity geometry="primitive: cylinder; radius: 40; height: 10"
                   position="0 2 0"
                   material="color: #4a7a3c"></a-entity>
 
-        <!-- Color patches like fields -->
+        <!-- Hills -->
+        <a-entity geometry="primitive: cylinder; radius: 8; height: 4"
+                  position="-12 4 10"
+                  material="color: #3f6a32"></a-entity>
+        <a-entity geometry="primitive: cylinder; radius: 6; height: 3"
+                  position="15 3 -8"
+                  material="color: #3b5f2e"></a-entity>
+
+        <!-- Rocks -->
+        <a-entity geometry="primitive: sphere; radius: 1.5"
+                  position="-5 3 -6"
+                  material="color: #777777"></a-entity>
+        <a-entity geometry="primitive: sphere; radius: 1.2"
+                  position="-7 3 -4"
+                  material="color: #666666"></a-entity>
+        <a-entity geometry="primitive: sphere; radius: 1.8"
+                  position="6 3 4"
+                  material="color: #888888"></a-entity>
+
+        <!-- Color patches -->
         <a-entity geometry="primitive: box; width: 12; height: 0.4; depth: 12"
                   position="-12 2.3 8"
                   material="color: #5fd35f"></a-entity>
@@ -159,12 +178,31 @@
                   position="15 2.2 10"
                   material="color: #3cb4ff; opacity: 0.9"></a-entity>
 
+        <!-- Chairs near lake -->
+        <a-entity geometry="primitive: box; width: 1; height: 0.2; depth: 1"
+                  position="13 2.4 11"
+                  material="color: #c28f5c"></a-entity>
+        <a-entity geometry="primitive: box; width: 0.2; height: 1; depth: 0.2"
+                  position="12.7 2 11.2"
+                  material="color: #8b5a2b"></a-entity>
+        <a-entity geometry="primitive: box; width: 0.2; height: 1; depth: 0.2"
+                  position="13.3 2 11.2"
+                  material="color: #8b5a2b"></a-entity>
+
+        <!-- Path to dock -->
+        <a-entity geometry="primitive: box; width: 2; height: 0.2; depth: 10"
+                  position="0 2.2 -10"
+                  material="color: #b38b6d"></a-entity>
+        <a-entity geometry="primitive: box; width: 2; height: 0.2; depth: 10"
+                  position="0 2.2 -18"
+                  material="color: #b38b6d"></a-entity>
+
         <!-- Dock -->
         <a-entity geometry="primitive: box; width: 4; height: 0.5; depth: 12"
                   position="0 2 -25"
                   material="color: #8b5a2b"></a-entity>
 
-        <!-- Fishing spot marker -->
+        <!-- Fishing spot -->
         <a-entity id="fishingSpot" position="0 2 -32"
                   geometry="primitive: circle; radius: 2"
                   material="color: #00ffff; opacity: 0.4"></a-entity>
@@ -206,7 +244,7 @@
         <a-entity text="value: Tidehaven Docks; align: center; color: white; width: 12"
                   position="0 8 0"></a-entity>
 
-        <!-- How to play sign (no blocking UI) -->
+        <!-- How to play sign -->
         <a-entity position="5 3 5">
           <a-entity geometry="primitive: box; width: 6; height: 3; depth: 0.2"
                     material="color: #333333"></a-entity>
