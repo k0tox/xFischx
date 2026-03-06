@@ -4,6 +4,7 @@ body {
   font-family: Arial, sans-serif;
 }
 
+/* HUD */
 #hud {
   position: fixed;
   top: 10px;
@@ -13,13 +14,53 @@ body {
   text-shadow: 0 0 4px black;
   z-index: 999;
 }
+#hud div { margin-bottom: 4px; }
 
-#hud div {
-  margin-bottom: 4px;
+.hidden { display: none; }
+
+/* Hotbar */
+#hotbar {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  z-index: 999;
+}
+.slot {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #888;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  text-align: center;
+  font-size: 12px;
+  line-height: 16px;
+  padding-top: 4px;
+  box-sizing: border-box;
+}
+.slot.selected {
+  border-color: #ffd700;
+  box-shadow: 0 0 6px #ffd700;
 }
 
-.hidden {
-  display: none;
+/* Inventory */
+#inventory {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+#inventoryInner {
+  width: 400px;
+  background: #222;
+  border: 2px solid #fff;
+  padding: 16px;
+  color: white;
 }
 
 /* Horizontal fishing UI */
@@ -30,7 +71,6 @@ body {
   transform: translate(-50%, -50%);
   z-index: 9999;
 }
-
 #fishBarContainerH {
   width: 300px;
   height: 40px;
@@ -39,7 +79,6 @@ body {
   position: relative;
   border-radius: 6px;
 }
-
 #fishMarkerH {
   width: 20px;
   height: 100%;
@@ -47,7 +86,6 @@ body {
   position: absolute;
   border-radius: 4px;
 }
-
 #catchZoneH {
   width: 60px;
   height: 100%;
@@ -55,7 +93,6 @@ body {
   position: absolute;
   border-radius: 4px;
 }
-
 #progressOuterH {
   width: 300px;
   height: 20px;
@@ -63,7 +100,6 @@ body {
   border: 2px solid white;
   margin-top: 10px;
 }
-
 #progressInnerH {
   width: 0%;
   height: 100%;
