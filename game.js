@@ -543,3 +543,72 @@ setInterval(() => {
     radarInfo.textContent = currentFish.name + " (" + currentFish.rarity + ")";
   }
 }, 500);
+
+async function generateFishFromRules() {
+  const rules = await fetch("fish-rules.json").then(r => r.json());
+  const fish = [];
+
+  const rarityOrder = ["common", "uncommon", "rare", "legendary", "mythic", "exotic"];
+
+  function rand(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function pickRarity(weights) {
+    const entries = Object.entries(weights);
+    const total = entries.reduce((a, b) => a + b[1], 0);
+    let roll = Math.random() * total;
+
+    for (const [rarity, weight] of entries) {
+      if (roll < weight) return rarity;
+      roll -= weight;
+    }
+    return "common";
+  }
+
+  function randomName(rarity) {
+    const prefixes = {
+      common: ["Pebble", "River", "Sun", "Reed", "Shore", "Tiny"],
+      uncommon: ["Moon", "Storm", "Wind", "Tide", "Silver"],
+      rare: ["Frost", "Crystal", "Shadow", "Iron", "Thunder"],
+      legendary: ["Ancient", "Radiant", "Phantom", "Solar", "Eternal"],
+      mythic: ["Abyssal", "Titanic", "Leviathan", "Eldritch", "Primordial"],
+      exotic: ["Celestial", "Voidborn", "Astral", "Eclipse", "Galactic"]
+    };
+
+    const suffixes = ["Trout", "Minnow", "Eel", "Ray", "Salmon", "Carp", "Snapper", "Bass"];
+
+    const p = prefixes[rarity][Math.floor(Math.random() * prefixes[rarity].length)];
+    const s = suffixes[Math.floor(Math.random() * suffixes.length)];
+
+    return `${p} ${s}`;
+  }
+
+  for (const island of rules.islands) {
+    for (let i = 0; i < island.fishCount; i++) {
+      const rarity = pickRarity(island.rarityWeights);
+      const [minW, maxW] = island.weightRanges[rarity];
+      const weight = rand(minW, maxW);
+
+      const rarityIndex = rarityOrder.indexOf(rarity);
+
+      const sellValue = Math.floor(weight * (1 + rarityIndex * 1.2));
+      const xp = Math.floor(weight * (0.7 + rarityIndex * 0.6));
+
+      fish.push({
+        name: randomName(rarity),
+        rarity,
+        weight,
+        sellValue,
+        xp,
+        island: island.name,
+        boss: false
+      });
+    }
+  }
+
+  return fish;
+}
+
+let fishList = [];
+generateFishFromRules().then(f => fishList = f);
