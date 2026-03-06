@@ -152,59 +152,18 @@ randomWeather();
 setInterval(randomWeather, 60000);
 
 // =====================
-// Rods
+// Data loading (fish + rods from JSON)
 // =====================
-const rods = [
-  {
-    name: "Driftwood Rod",
-    resilience: 1.0,
-    luck: 1.0,
-    control: 1.0,
-    lureSpeed: 1.0,
-    progressSpeed: 1.0,
-    maxWeight: 50,
-    cost: 0
-  },
-  {
-    name: "Ironline Rod",
-    resilience: 1.1,
-    luck: 1.05,
-    control: 1.1,
-    lureSpeed: 1.05,
-    progressSpeed: 1.05,
-    maxWeight: 150,
-    cost: 500
-  },
-  {
-    name: "Stormcaster Rod",
-    resilience: 1.2,
-    luck: 1.1,
-    control: 1.15,
-    lureSpeed: 1.1,
-    progressSpeed: 1.1,
-    maxWeight: 300,
-    cost: 2500
-  }
-];
+let fishList = [];
+let rods = [];
 
-// =====================
-// Fish list
-// =====================
-const fishList = [
-  { name: "Sunscale Trout", rarity: "common", sellValue: 10, xp: 5, weight: 5, island: "spawn", boss: false },
-  { name: "Pebble Minnow", rarity: "common", sellValue: 12, xp: 6, weight: 3, island: "spawn", boss: false },
-  { name: "Reedflicker", rarity: "common", sellValue: 15, xp: 7, weight: 4, island: "spawn", boss: false },
+fetch('fish-data.json')
+  .then(r => r.json())
+  .then(data => { fishList = data; });
 
-  { name: "Moonfin Eel", rarity: "uncommon", sellValue: 25, xp: 12, weight: 10, island: "spawn", boss: false },
-  { name: "Stormtail Perch", rarity: "uncommon", sellValue: 30, xp: 14, weight: 12, island: "spawn", boss: false },
-
-  { name: "Stormback Ray", rarity: "rare", sellValue: 75, xp: 30, weight: 40, island: "spawn", boss: false },
-  { name: "Frostjaw Salmon", rarity: "rare", sellValue: 90, xp: 35, weight: 45, island: "spawn", boss: false },
-
-  { name: "Crystal Carp", rarity: "legendary", sellValue: 250, xp: 80, weight: 80, island: "spawn", boss: false },
-
-  { name: "Abyssal Leviathan", rarity: "mythic", sellValue: 1000, xp: 300, weight: 500, island: "underground", boss: true }
-];
+fetch('rods-data.json')
+  .then(r => r.json())
+  .then(data => { rods = data; });
 
 // =====================
 // Leveling
@@ -551,7 +510,7 @@ document.addEventListener("click", (e) => {
   const spotPos = fishingSpot.object3D.position;
   const dist = pos.distanceTo(spotPos);
 
-  if (dist < 6) {
+  if (dist < 6 && fishList.length > 0) {
     const fish = fishList[Math.floor(Math.random() * fishList.length)];
     startFishingH(fish);
   }
