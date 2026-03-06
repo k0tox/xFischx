@@ -11,10 +11,18 @@
   <body>
     <!-- HUD -->
     <div id="hud">
-      <div id="money">Money: 0</div>
+      <div id="money">Quents: 0</div>
       <div id="level">Level: 1</div>
       <div id="streak">Streak: 0</div>
       <div id="weather">Weather: Clear</div>
+    </div>
+
+    <!-- Oxygen -->
+    <div id="oxygenHUD">
+      <span>Oxygen</span>
+      <div id="oxygenOuter">
+        <div id="oxygenInner"></div>
+      </div>
     </div>
 
     <!-- Hotbar -->
@@ -33,11 +41,53 @@
     <!-- Inventory -->
     <div id="inventory" class="hidden">
       <div id="inventoryInner">
+        <button id="invClose" class="closeBtn">X</button>
         <h2>Inventory</h2>
-        <p>(Tab to close)</p>
+        <p>(Tab or X to close)</p>
         <div id="inventoryContent">
           <p>Equipment bag, rods, bait, boats, etc. will go here.</p>
         </div>
+      </div>
+    </div>
+
+    <!-- Bestiary -->
+    <div id="bestiary" class="hidden">
+      <div id="bestiaryInner">
+        <button id="bestiaryClose" class="closeBtn">X</button>
+        <h2>Bestiary</h2>
+        <p>Catch fish to fill entries. Completing sets gives Quents + XP + bait.</p>
+        <div id="bestiaryContent"></div>
+      </div>
+    </div>
+
+    <!-- Rod Bestiary -->
+    <div id="rodBestiary" class="hidden">
+      <div id="rodBestiaryInner">
+        <button id="rodBestiaryClose" class="closeBtn">X</button>
+        <h2>Rod Compendium</h2>
+        <div id="rodBestiaryContent"></div>
+      </div>
+    </div>
+
+    <!-- ESC Menu -->
+    <div id="escMenu" class="hidden">
+      <div id="escInner">
+        <button id="escClose" class="closeBtn">X</button>
+        <h2>Settings</h2>
+        <h3>Video</h3>
+        <label>FOV:
+          <input type="range" id="fovSlider" min="60" max="110" value="80">
+        </label>
+        <h3>Keybinds</h3>
+        <p>WASD: Move</p>
+        <p>Mouse: Look (FP)</p>
+        <p>Right click drag: Orbit (TP)</p>
+        <p>V: Toggle FP/TP</p>
+        <p>Tab: Inventory</p>
+        <p>1–9: Hotbar</p>
+        <p>E: Interact</p>
+        <p>Left click: Fish</p>
+        <p>H: Home</p>
       </div>
     </div>
 
@@ -52,6 +102,12 @@
       </div>
     </div>
 
+    <!-- Fish radar -->
+    <div id="radarHUD">
+      <span>Fish Radar</span>
+      <div id="radarInfo">No target</div>
+    </div>
+
     <!-- 3D Scene -->
     <a-scene day-night-cycle="speed: 0.05">
       <!-- Lights -->
@@ -63,62 +119,135 @@
       <a-sky color="#87CEEB"></a-sky>
 
       <!-- Ocean -->
-      <a-entity geometry="primitive: plane; width: 500; height: 500"
+      <a-entity geometry="primitive: plane; width: 800; height: 800"
                 rotation="-90 0 0"
-                material="color: #1e90ff; opacity: 0.9">
+                material="color: #1e90ff; opacity: 0.95">
       </a-entity>
 
-      <!-- Main island -->
-      <a-entity geometry="primitive: cylinder; radius: 20; height: 3"
-                position="0 -1 0"
+      <!-- High spawn island -->
+      <a-entity geometry="primitive: cylinder; radius: 25; height: 8"
+                position="0 2 0"
                 material="color: #4a7a3c">
       </a-entity>
 
-      <!-- Dock -->
-      <a-entity geometry="primitive: box; width: 4; height: 0.5; depth: 8"
-                position="0 0 -12"
-                material="color: #8b5a2b">
-      </a-entity>
-
-      <!-- Rocks -->
-      <a-entity geometry="primitive: sphere; radius: 1.5"
-                position="-8 0 -5"
-                material="color: #777777; roughness: 1"></a-entity>
-      <a-entity geometry="primitive: sphere; radius: 1"
-                position="6 0 -3"
-                material="color: #666666; roughness: 1"></a-entity>
-
-      <!-- Pond on island -->
-      <a-entity geometry="primitive: cylinder; radius: 4; height: 0.2"
-                position="8 -0.9 4"
+      <!-- Lake on island -->
+      <a-entity geometry="primitive: cylinder; radius: 6; height: 0.3"
+                position="10 2.2 6"
                 material="color: #3cb4ff; opacity: 0.9">
       </a-entity>
 
+      <!-- Dock to ocean -->
+      <a-entity geometry="primitive: box; width: 4; height: 0.5; depth: 10"
+                position="0 2 -18"
+                material="color: #8b5a2b">
+      </a-entity>
+
       <!-- Fishing spot marker (ocean) -->
-      <a-entity id="fishingSpot" position="0 0 -16"
+      <a-entity id="fishingSpot" position="0 2 -23"
                 geometry="primitive: circle; radius: 2"
                 material="color: #00ffff; opacity: 0.4">
       </a-entity>
 
-      <!-- Player rig (movement + look) -->
-      <a-entity id="rig" position="0 1.6 5" wasd-controls="acceleration: 40" look-controls>
-        <a-entity id="camera" camera></a-entity>
+      <!-- Second island (higher level) -->
+      <a-entity geometry="primitive: cylinder; radius: 18; height: 6"
+                position="60 3 40"
+                material="color: #3f6a32">
+      </a-entity>
 
-        <!-- Rod in hand (visible when slot 1 selected) -->
-        <a-entity id="rodInHand"
-                  geometry="primitive: box; width: 0.1; height: 1.2; depth: 0.1"
-                  material="color: #c28f5c"
-                  position="0.3 -0.4 -0.7"
-                  rotation="0 0 -40">
+      <!-- Underground fishing area (access via water spout) -->
+      <a-entity geometry="primitive: box; width: 40; height: 4; depth: 40"
+                position="0 -15 0"
+                material="color: #1b2838">
+      </a-entity>
+      <a-entity id="undergroundWater"
+                geometry="primitive: plane; width: 40; height: 40"
+                rotation="-90 0 0"
+                position="0 -13 0"
+                material="color: #003366; opacity: 0.9">
+      </a-entity>
+
+      <!-- Mysterious water spout -->
+      <a-entity id="waterSpout" position="-10 2 -10">
+        <a-entity geometry="primitive: cylinder; radius: 1; height: 6"
+                  material="color: #66ccff; opacity: 0.7"></a-entity>
+      </a-entity>
+
+      <!-- Merchant stalls + NPCs -->
+      <a-entity geometry="primitive: box; width: 4; height: 2; depth: 2"
+                position="-8 2 4"
+                material="color: #8b5a2b"></a-entity>
+      <a-entity npc-sway id="merchantNPC" position="-8 2.5 4">
+        <a-entity geometry="primitive: box; width: 0.8; height: 1.6; depth: 0.5"
+                  material="color: #ffcc99"></a-entity>
+      </a-entity>
+
+      <a-entity geometry="primitive: box; width: 4; height: 2; depth: 2"
+                position="-2 2 4"
+                material="color: #8b5a2b"></a-entity>
+      <a-entity npc-sway id="homeNPC" position="-2 2.5 4">
+        <a-entity geometry="primitive: box; width: 0.8; height: 1.6; depth: 0.5"
+                  material="color: #99ccff"></a-entity>
+      </a-entity>
+
+      <a-entity geometry="primitive: box; width: 4; height: 2; depth: 2"
+                position="4 2 4"
+                material="color: #8b5a2b"></a-entity>
+      <a-entity npc-sway id="appraiserNPC" position="4 2.5 4">
+        <a-entity geometry="primitive: box; width: 0.8; height: 1.6; depth: 0.5"
+                  material="color: #ff9999"></a-entity>
+      </a-entity>
+
+      <!-- Glider stand -->
+      <a-entity geometry="primitive: box; width: 3; height: 0.5; depth: 3"
+                position="6 2 0"
+                material="color: #8b5a2b"></a-entity>
+      <a-entity geometry="primitive: cone; radiusBottom: 1.5; height: 0.5"
+                position="6 2.5 0"
+                material="color: #ffdd55"></a-entity>
+
+      <!-- Whale/orca migration arrows -->
+      <a-entity id="whalePath">
+        <a-entity geometry="primitive: cone; radiusBottom: 0.5; height: 1"
+                  position="-30 2 -40"
+                  rotation="0 45 0"
+                  material="color: #ffffff; opacity: 0.6"></a-entity>
+        <a-entity geometry="primitive: cone; radiusBottom: 0.5; height: 1"
+                  position="-10 2 -20"
+                  rotation="0 45 0"
+                  material="color: #ffffff; opacity: 0.6"></a-entity>
+        <a-entity geometry="primitive: cone; radiusBottom: 0.5; height: 1"
+                  position="10 2 0"
+                  rotation="0 45 0"
+                  material="color: #ffffff; opacity: 0.6"></a-entity>
+      </a-entity>
+
+      <!-- Player rig -->
+      <a-entity id="rig" position="0 3 5" wasd-controls="acceleration: 40" look-controls>
+        <a-entity id="camera" camera="fov: 80"></a-entity>
+
+        <!-- Rod in hand -->
+        <a-entity id="rodInHand" position="0.3 -0.4 -0.7" rotation="0 0 -40">
+          <a-entity geometry="primitive: cylinder; radius: 0.04; height: 0.5"
+                    material="color: #5b3a1a"
+                    position="0 0 0"></a-entity>
+          <a-entity geometry="primitive: cylinder; radius: 0.02; height: 1.2"
+                    material="color: #c28f5c"
+                    position="0 0.8 0"></a-entity>
+          <a-entity geometry="primitive: cylinder; radius: 0.005; height: 1.0"
+                    material="color: #ffffff"
+                    position="0 1.4 -0.05"></a-entity>
+          <a-entity geometry="primitive: sphere; radius: 0.03"
+                    material="color: #ff0000"
+                    position="0 1.9 -0.05"></a-entity>
         </a-entity>
 
-        <!-- Level text above player -->
+        <!-- Level text -->
         <a-entity id="levelText"
                   text="value: Lv 1; align: center; color: white; width: 4"
                   position="0 1.2 0">
         </a-entity>
 
-        <!-- ! marker above head when reeling -->
+        <!-- ! marker -->
         <a-entity id="fishAlert"
                   text="value: !; align: center; color: white; width: 4"
                   position="0 1.6 0"
