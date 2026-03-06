@@ -1,5 +1,5 @@
 // =====================
-// Day–night cycle
+// Components
 // =====================
 AFRAME.registerComponent('day-night-cycle', {
   schema: { speed: { default: 0.05 } },
@@ -14,7 +14,6 @@ AFRAME.registerComponent('day-night-cycle', {
   }
 });
 
-// NPC sway
 AFRAME.registerComponent('npc-sway', {
   tick(time) {
     const t = time / 1000;
@@ -22,7 +21,6 @@ AFRAME.registerComponent('npc-sway', {
   }
 });
 
-// Render distance component
 AFRAME.registerComponent('render-distance', {
   schema: { maxDistance: { default: 500 } },
   init() {
@@ -39,7 +37,6 @@ AFRAME.registerComponent('render-distance', {
   }
 });
 
-// Boat controller
 AFRAME.registerComponent('boat-controller', {
   init() {
     this.rig = document.querySelector('#rig');
@@ -72,12 +69,8 @@ AFRAME.registerComponent('boat-controller', {
     const boatPos = this.el.object3D.position;
     this.rig.object3D.position.set(boatPos.x, boatPos.y + 1.2, boatPos.z);
   },
-  sit() {
-    this.playerOnBoat = true;
-  },
-  leave() {
-    this.playerOnBoat = false;
-  }
+  sit() { this.playerOnBoat = true; },
+  leave() { this.playerOnBoat = false; }
 });
 
 // =====================
@@ -120,6 +113,13 @@ const fovSlider = document.getElementById("fovSlider");
 const rig = document.getElementById("rig");
 const camera = document.getElementById("camera");
 
+// Force all GUIs closed on load
+inventoryEl.classList.add("hidden");
+bestiaryEl.classList.add("hidden");
+rodBestiaryEl.classList.add("hidden");
+escMenuEl.classList.add("hidden");
+document.getElementById("fishingUI").classList.add("hidden");
+
 // Oxygen
 let oxygen = 100;
 const oxygenInner = document.getElementById("oxygenInner");
@@ -138,9 +138,7 @@ function updateHUD() {
 }
 updateHUD();
 
-// =====================
 // Weather
-// =====================
 const weatherTypes = ["Clear", "Rain", "Storm", "Fog"];
 let currentWeather = "Clear";
 
@@ -151,23 +149,53 @@ function randomWeather() {
 randomWeather();
 setInterval(randomWeather, 60000);
 
-// =====================
-// Data loading (fish + rods from JSON)
-// =====================
-let fishList = [];
-let rods = [];
+// Data
+let fishList = [
+  { name: "Sunscale Trout", rarity: "common", sellValue: 10, xp: 5, weight: 5, island: "spawn", boss: false },
+  { name: "Pebble Minnow", rarity: "common", sellValue: 12, xp: 6, weight: 3, island: "spawn", boss: false },
+  { name: "Reedflicker", rarity: "common", sellValue: 15, xp: 7, weight: 4, island: "spawn", boss: false },
+  { name: "Moonfin Eel", rarity: "uncommon", sellValue: 25, xp: 12, weight: 10, island: "spawn", boss: false },
+  { name: "Stormtail Perch", rarity: "uncommon", sellValue: 30, xp: 14, weight: 12, island: "spawn", boss: false },
+  { name: "Stormback Ray", rarity: "rare", sellValue: 75, xp: 30, weight: 40, island: "spawn", boss: false },
+  { name: "Frostjaw Salmon", rarity: "rare", sellValue: 90, xp: 35, weight: 45, island: "spawn", boss: false },
+  { name: "Crystal Carp", rarity: "legendary", sellValue: 250, xp: 80, weight: 80, island: "spawn", boss: false },
+  { name: "Abyssal Leviathan", rarity: "mythic", sellValue: 1000, xp: 300, weight: 500, island: "underground", boss: true }
+];
 
-fetch('fish-data.json')
-  .then(r => r.json())
-  .then(data => { fishList = data; });
+let rods = [
+  {
+    name: "Driftwood Rod",
+    resilience: 1.0,
+    luck: 1.0,
+    control: 1.0,
+    lureSpeed: 1.0,
+    progressSpeed: 1.0,
+    maxWeight: 50,
+    cost: 0
+  },
+  {
+    name: "Ironline Rod",
+    resilience: 1.1,
+    luck: 1.05,
+    control: 1.1,
+    lureSpeed: 1.05,
+    progressSpeed: 1.05,
+    maxWeight: 150,
+    cost: 500
+  },
+  {
+    name: "Stormcaster Rod",
+    resilience: 1.2,
+    luck: 1.1,
+    control: 1.15,
+    lureSpeed: 1.1,
+    progressSpeed: 1.1,
+    maxWeight: 300,
+    cost: 2500
+  }
+];
 
-fetch('rods-data.json')
-  .then(r => r.json())
-  .then(data => { rods = data; });
-
-// =====================
 // Leveling
-// =====================
 function addXP(amount) {
   xp += amount;
   let needed = level * 100;
@@ -183,9 +211,7 @@ function addXP(amount) {
   updateHUD();
 }
 
-// =====================
-// Oxygen / drowning / home
-// =====================
+// Oxygen / death
 function respawnPlayer() {
   rig.setAttribute("position", `${homePosition.x} ${homePosition.y} ${homePosition.z}`);
 }
@@ -220,9 +246,7 @@ setInterval(() => {
   updateOxygenHUD();
 }, 200);
 
-// =====================
-// Hotbar / inventory / camera / ESC
-// =====================
+// Hotbar / camera / ESC / inventory
 function setSlot(slot) {
   currentSlot = slot;
   document.querySelectorAll(".slot").forEach(s => {
@@ -252,7 +276,12 @@ document.addEventListener("keydown", (e) => {
   }
 
   if (e.key === "Escape") {
-    escMenuEl.classList.toggle("hidden");
+    const isHidden = escMenuEl.classList.contains("hidden");
+    escMenuEl.classList.toggle("hidden", !isHidden);
+  }
+
+  if (e.key.toLowerCase() === "e") {
+    handleInteract();
   }
 });
 
@@ -311,9 +340,7 @@ fovSlider.addEventListener("input", () => {
   camera.setAttribute("camera", "fov", v);
 });
 
-// =====================
 // Fishing minigame
-// =====================
 let fishingH = false;
 let fishX = 150;
 let fishSpeedH = 1.5;
@@ -437,15 +464,7 @@ document.addEventListener("mouseup", (e) => {
   if (e.button === 0 && fishingH) mouseDown = false;
 });
 
-// =====================
-// Interaction: E, fishing, water spout, home NPC, merchant, appraiser, boat sit
-// =====================
-document.addEventListener("keydown", (e) => {
-  if (e.key.toLowerCase() === "e") {
-    handleInteract();
-  }
-});
-
+// Interact
 function handleInteract() {
   const rigPos = rig.object3D.position;
 
@@ -516,9 +535,7 @@ document.addEventListener("click", (e) => {
   }
 });
 
-// =====================
-// Radar (simple)
-// =====================
+// Radar
 setInterval(() => {
   if (!currentFish) {
     radarInfo.textContent = "No target";
