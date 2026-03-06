@@ -1,1 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Fisch Web</title>
 
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+<link rel="stylesheet" href="style.css">
+<script defer src="game.js"></script>
+
+</head>
+
+<body>
+
+<div id="ui">
+
+<h1>Fisch</h1>
+
+<div id="stats">
+Level: <span id="level">1</span>
+XP: <span id="xp">0</span>
+Coins: <span id="coins">0</span>
+</div>
+
+<button id="fishButton">Cast Line</button>
+
+<div id="shop">
+<h3>Rod Shop</h3>
+<button onclick="buyRod('basic')">Basic Rod (Free)</button>
+<button onclick="buyRod('pro')">Pro Rod (200)</button>
+<button onclick="buyRod('legend')">Legend Rod (1000)</button>
+</div>
+
+<div id="log"></div>
+
+</div>
+
+<a-scene>
+
+<a-entity id="player"
+position="0 2 5"
+camera
+look-controls
+wasd-controls>
+</a-entity>
+
+<a-entity light="type: directional; intensity: 1" position="0 10 5"></a-entity>
+
+<a-sky color="#87CEEB"></a-sky>
+
+<a-plane
+id="ocean"
+rotation="-90 0 0"
+width="500"
+height="500"
+color="#1e90ff">
+</a-plane>
+
+<a-entity id="fishSpawn"></a-entity>
+
+</a-scene>
+
+</body>
+</html>
