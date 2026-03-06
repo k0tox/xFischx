@@ -125,13 +125,34 @@
                 material="color: #1e90ff; opacity: 0.95">
       </a-entity>
 
-      <!-- ===== Islands (spread out, with labels) ===== -->
-
-      <!-- Spawn Island -->
+      <!-- ===== Spawn Island (colorful, Bee Swarm–style vibe) ===== -->
       <a-entity render-distance="maxDistance: 600">
+        <!-- Main island -->
         <a-entity geometry="primitive: cylinder; radius: 40; height: 10"
                   position="0 2 0"
                   material="color: #4a7a3c"></a-entity>
+
+        <!-- Color patches like fields -->
+        <a-entity geometry="primitive: box; width: 12; height: 0.4; depth: 12"
+                  position="-12 2.3 8"
+                  material="color: #5fd35f"></a-entity>
+        <a-entity geometry="primitive: box; width: 10; height: 0.4; depth: 10"
+                  position="14 2.3 -6"
+                  material="color: #ffb347"></a-entity>
+        <a-entity geometry="primitive: box; width: 8; height: 0.4; depth: 8"
+                  position="-16 2.3 -10"
+                  material="color: #87cefa"></a-entity>
+
+        <!-- Fence -->
+        <a-entity geometry="primitive: box; width: 30; height: 1; depth: 0.4"
+                  position="0 3 18"
+                  material="color: #ffffff"></a-entity>
+        <a-entity geometry="primitive: box; width: 0.4; height: 2; depth: 0.4"
+                  position="-14 3 18"
+                  material="color: #ffffff"></a-entity>
+        <a-entity geometry="primitive: box; width: 0.4; height: 2; depth: 0.4"
+                  position="14 3 18"
+                  material="color: #ffffff"></a-entity>
 
         <!-- Lake -->
         <a-entity geometry="primitive: cylinder; radius: 8; height: 0.3"
@@ -184,6 +205,15 @@
         <!-- Spawn Island label -->
         <a-entity text="value: Tidehaven Docks; align: center; color: white; width: 12"
                   position="0 8 0"></a-entity>
+
+        <!-- How to play sign (no blocking UI) -->
+        <a-entity position="5 3 5">
+          <a-entity geometry="primitive: box; width: 6; height: 3; depth: 0.2"
+                    material="color: #333333"></a-entity>
+          <a-entity text="value: Controls:\nWASD move\nMouse look\nRight click drag (3rd)\nLeft click fish\nE interact\nTab inventory\nV FP/TP\nH Home; 
+                          align: center; color: white; width: 8"
+                    position="0 0 0.2"></a-entity>
+        </a-entity>
       </a-entity>
 
       <!-- Island 2 -->
