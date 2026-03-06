@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Driftwood Rod",
+    "resilience": 1.0,
+    "luck": 1.0,
+    "control": 1.0,
+    "lureSpeed": 1.0,
+    "progressSpeed": 1.0,
+    "maxWeight": 50,
+    "cost": 0
+  },
+  {
+    "name": "Ironline Rod",
+    "resilience": 1.1,
+    "luck": 1.05,
+    "control": 1.1,
+    "lureSpeed": 1.05,
+    "progressSpeed": 1.05,
+    "maxWeight": 150,
+    "cost": 500
+  },
+  {
+    "name": "Stormcaster Rod",
+    "resilience": 1.2,
+    "luck": 1.1,
+    "control": 1.15,
+    "lureSpeed": 1.1,
+    "progressSpeed": 1.1,
+    "maxWeight": 300,
+    "cost": 2500
+  }
+]
