@@ -1,1 +1,71 @@
+body {
+  margin: 0;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
 
+#hud {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  color: white;
+  font-size: 16px;
+  text-shadow: 0 0 4px black;
+  z-index: 999;
+}
+
+#hud div {
+  margin-bottom: 4px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Horizontal fishing UI */
+#fishingUI {
+  position: fixed;
+  left: 50%;
+  top: 70%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+#fishBarContainerH {
+  width: 300px;
+  height: 40px;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid white;
+  position: relative;
+  border-radius: 6px;
+}
+
+#fishMarkerH {
+  width: 20px;
+  height: 100%;
+  background: #00ffff;
+  position: absolute;
+  border-radius: 4px;
+}
+
+#catchZoneH {
+  width: 60px;
+  height: 100%;
+  background: rgba(255,255,0,0.7);
+  position: absolute;
+  border-radius: 4px;
+}
+
+#progressOuterH {
+  width: 300px;
+  height: 20px;
+  background: rgba(0,0,0,0.6);
+  border: 2px solid white;
+  margin-top: 10px;
+}
+
+#progressInnerH {
+  width: 0%;
+  height: 100%;
+  background: #00ff00;
+}
