@@ -1,15 +1,198 @@
-[
-  { "name": "Sunscale Trout", "rarity": "common", "sellValue": 10, "xp": 5, "weight": 5, "island": "spawn", "boss": false },
-  { "name": "Pebble Minnow", "rarity": "common", "sellValue": 12, "xp": 6, "weight": 3, "island": "spawn", "boss": false },
-  { "name": "Reedflicker", "rarity": "common", "sellValue": 15, "xp": 7, "weight": 4, "island": "spawn", "boss": false },
-
-  { "name": "Moonfin Eel", "rarity": "uncommon", "sellValue": 25, "xp": 12, "weight": 10, "island": "spawn", "boss": false },
-  { "name": "Stormtail Perch", "rarity": "uncommon", "sellValue": 30, "xp": 14, "weight": 12, "island": "spawn", "boss": false },
-
-  { "name": "Stormback Ray", "rarity": "rare", "sellValue": 75, "xp": 30, "weight": 40, "island": "spawn", "boss": false },
-  { "name": "Frostjaw Salmon", "rarity": "rare", "sellValue": 90, "xp": 35, "weight": 45, "island": "spawn", "boss": false },
-
-  { "name": "Crystal Carp", "rarity": "legendary", "sellValue": 250, "xp": 80, "weight": 80, "island": "spawn", "boss": false },
-
-  { "name": "Abyssal Leviathan", "rarity": "mythic", "sellValue": 1000, "xp": 300, "weight": 500, "island": "underground", "boss": true }
-]
+{
+  "islands": [
+    {
+      "name": "Tidehaven Docks",
+      "fishCount": 20,
+      "rarityWeights": {
+        "common": 65,
+        "uncommon": 25,
+        "rare": 8,
+        "legendary": 2,
+        "mythic": 0,
+        "exotic": 0
+      },
+      "weightRanges": {
+        "common": [1, 6],
+        "uncommon": [4, 12],
+        "rare": [10, 20],
+        "legendary": [18, 25],
+        "mythic": [0, 0],
+        "exotic": [0, 0]
+      }
+    },
+    {
+      "name": "Stormrise Cliffs",
+      "fishCount": 22,
+      "rarityWeights": {
+        "common": 40,
+        "uncommon": 35,
+        "rare": 15,
+        "legendary": 8,
+        "mythic": 2,
+        "exotic": 0
+      },
+      "weightRanges": {
+        "common": [5, 15],
+        "uncommon": [10, 25],
+        "rare": [20, 50],
+        "legendary": [40, 80],
+        "mythic": [80, 120],
+        "exotic": [0, 0]
+      }
+    },
+    {
+      "name": "Emberfall Atoll",
+      "fishCount": 24,
+      "rarityWeights": {
+        "common": 25,
+        "uncommon": 35,
+        "rare": 20,
+        "legendary": 15,
+        "mythic": 4,
+        "exotic": 1
+      },
+      "weightRanges": {
+        "common": [5, 12],
+        "uncommon": [10, 30],
+        "rare": [25, 60],
+        "legendary": [60, 120],
+        "mythic": [120, 300],
+        "exotic": [300, 500]
+      }
+    },
+    {
+      "name": "Abyssal Grotto",
+      "fishCount": 18,
+      "rarityWeights": {
+        "common": 0,
+        "uncommon": 0,
+        "rare": 25,
+        "legendary": 30,
+        "mythic": 30,
+        "exotic": 15
+      },
+      "weightRanges": {
+        "rare": [60, 200],
+        "legendary": [200, 600],
+        "mythic": [600, 2000],
+        "exotic": [2000, 5000]
+      }
+    },
+    {
+      "name": "Glacierpoint Fjord",
+      "fishCount": 20,
+      "rarityWeights": {
+        "common": 35,
+        "uncommon": 35,
+        "rare": 20,
+        "legendary": 8,
+        "mythic": 2,
+        "exotic": 0
+      },
+      "weightRanges": {
+        "common": [5, 12],
+        "uncommon": [10, 25],
+        "rare": [25, 60],
+        "legendary": [60, 150],
+        "mythic": [150, 250],
+        "exotic": [0, 0]
+      }
+    },
+    {
+      "name": "Verdant Reef",
+      "fishCount": 22,
+      "rarityWeights": {
+        "common": 20,
+        "uncommon": 30,
+        "rare": 25,
+        "legendary": 15,
+        "mythic": 8,
+        "exotic": 2
+      },
+      "weightRanges": {
+        "common": [3, 10],
+        "uncommon": [10, 25],
+        "rare": [25, 60],
+        "legendary": [60, 150],
+        "mythic": [150, 300],
+        "exotic": [300, 600]
+      }
+    },
+    {
+      "name": "Obsidian Trench",
+      "fishCount": 18,
+      "rarityWeights": {
+        "common": 0,
+        "uncommon": 0,
+        "rare": 30,
+        "legendary": 30,
+        "mythic": 25,
+        "exotic": 15
+      },
+      "weightRanges": {
+        "rare": [80, 200],
+        "legendary": [200, 500],
+        "mythic": [500, 1500],
+        "exotic": [1500, 4000]
+      }
+    },
+    {
+      "name": "Celestine Isles",
+      "fishCount": 20,
+      "rarityWeights": {
+        "common": 10,
+        "uncommon": 25,
+        "rare": 25,
+        "legendary": 20,
+        "mythic": 15,
+        "exotic": 5
+      },
+      "weightRanges": {
+        "common": [5, 12],
+        "uncommon": [10, 30],
+        "rare": [30, 80],
+        "legendary": [80, 200],
+        "mythic": [200, 400],
+        "exotic": [400, 800]
+      }
+    },
+    {
+      "name": "Sapphire Basin",
+      "fishCount": 20,
+      "rarityWeights": {
+        "common": 50,
+        "uncommon": 30,
+        "rare": 15,
+        "legendary": 5,
+        "mythic": 0,
+        "exotic": 0
+      },
+      "weightRanges": {
+        "common": [3, 10],
+        "uncommon": [10, 25],
+        "rare": [25, 60],
+        "legendary": [60, 120],
+        "mythic": [0, 0],
+        "exotic": [0, 0]
+      }
+    },
+    {
+      "name": "Astral Abyss",
+      "fishCount": 16,
+      "rarityWeights": {
+        "common": 0,
+        "uncommon": 0,
+        "rare": 20,
+        "legendary": 30,
+        "mythic": 30,
+        "exotic": 20
+      },
+      "weightRanges": {
+        "rare": [100, 300],
+        "legendary": [300, 800],
+        "mythic": [800, 2500],
+        "exotic": [2500, 6000]
+      }
+    }
+  ]
+}
