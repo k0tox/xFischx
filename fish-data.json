@@ -1,0 +1,15 @@
+[
+  { "name": "Sunscale Trout", "rarity": "common", "sellValue": 10, "xp": 5, "weight": 5, "island": "spawn", "boss": false },
+  { "name": "Pebble Minnow", "rarity": "common", "sellValue": 12, "xp": 6, "weight": 3, "island": "spawn", "boss": false },
+  { "name": "Reedflicker", "rarity": "common", "sellValue": 15, "xp": 7, "weight": 4, "island": "spawn", "boss": false },
+
+  { "name": "Moonfin Eel", "rarity": "uncommon", "sellValue": 25, "xp": 12, "weight": 10, "island": "spawn", "boss": false },
+  { "name": "Stormtail Perch", "rarity": "uncommon", "sellValue": 30, "xp": 14, "weight": 12, "island": "spawn", "boss": false },
+
+  { "name": "Stormback Ray", "rarity": "rare", "sellValue": 75, "xp": 30, "weight": 40, "island": "spawn", "boss": false },
+  { "name": "Frostjaw Salmon", "rarity": "rare", "sellValue": 90, "xp": 35, "weight": 45, "island": "spawn", "boss": false },
+
+  { "name": "Crystal Carp", "rarity": "legendary", "sellValue": 250, "xp": 80, "weight": 80, "island": "spawn", "boss": false },
+
+  { "name": "Abyssal Leviathan", "rarity": "mythic", "sellValue": 1000, "xp": 300, "weight": 500, "island": "underground", "boss": true }
+]
