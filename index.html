@@ -13,8 +13,32 @@
     <div id="hud">
       <div id="money">Money: 0</div>
       <div id="level">Level: 1</div>
+      <div id="streak">Streak: 0</div>
       <div id="weather">Weather: Clear</div>
-      <div id="rodName">Rod: Driftwood Rod</div>
+    </div>
+
+    <!-- Hotbar -->
+    <div id="hotbar">
+      <div class="slot selected" data-slot="1">1<br>Rod</div>
+      <div class="slot" data-slot="2">2<br>Equip</div>
+      <div class="slot" data-slot="3">3<br>Bestiary</div>
+      <div class="slot" data-slot="4">4<br>Quests</div>
+      <div class="slot" data-slot="5">5<br>Boats</div>
+      <div class="slot" data-slot="6">6</div>
+      <div class="slot" data-slot="7">7</div>
+      <div class="slot" data-slot="8">8</div>
+      <div class="slot" data-slot="9">9</div>
+    </div>
+
+    <!-- Inventory -->
+    <div id="inventory" class="hidden">
+      <div id="inventoryInner">
+        <h2>Inventory</h2>
+        <p>(Tab to close)</p>
+        <div id="inventoryContent">
+          <p>Equipment bag, rods, bait, boats, etc. will go here.</p>
+        </div>
+      </div>
     </div>
 
     <!-- Fishing UI -->
@@ -30,26 +54,76 @@
 
     <!-- 3D Scene -->
     <a-scene day-night-cycle="speed: 0.05">
-      <a-entity light="type: ambient; intensity: 0.55"></a-entity>
-      <a-entity id="sunLight" light="type: directional; intensity: 1.2" position="0 50 0"></a-entity>
-      <a-entity id="moonLight" light="type: directional; intensity: 0.6" position="0 -50 0"></a-entity>
+      <!-- Lights -->
+      <a-entity light="type: ambient; intensity: 0.6; color: #ffffff"></a-entity>
+      <a-entity id="sunLight" light="type: directional; intensity: 1.2; color: #ffffff" position="0 50 0"></a-entity>
+      <a-entity id="moonLight" light="type: directional; intensity: 0.6; color: #cce0ff" position="0 -50 0"></a-entity>
 
+      <!-- Sky -->
       <a-sky color="#87CEEB"></a-sky>
 
+      <!-- Ocean -->
       <a-entity geometry="primitive: plane; width: 500; height: 500"
                 rotation="-90 0 0"
-                material="color: #1e90ff; opacity: 0.8"></a-entity>
+                material="color: #1e90ff; opacity: 0.9">
+      </a-entity>
 
-      <a-entity geometry="primitive: box; width: 40; height: 2; depth: 40"
+      <!-- Main island -->
+      <a-entity geometry="primitive: cylinder; radius: 20; height: 3"
                 position="0 -1 0"
-                material="color: #4a7a3c"></a-entity>
+                material="color: #4a7a3c">
+      </a-entity>
 
-      <a-entity id="fishingSpot" position="0 0 -10"
+      <!-- Dock -->
+      <a-entity geometry="primitive: box; width: 4; height: 0.5; depth: 8"
+                position="0 0 -12"
+                material="color: #8b5a2b">
+      </a-entity>
+
+      <!-- Rocks -->
+      <a-entity geometry="primitive: sphere; radius: 1.5"
+                position="-8 0 -5"
+                material="color: #777777; roughness: 1"></a-entity>
+      <a-entity geometry="primitive: sphere; radius: 1"
+                position="6 0 -3"
+                material="color: #666666; roughness: 1"></a-entity>
+
+      <!-- Pond on island -->
+      <a-entity geometry="primitive: cylinder; radius: 4; height: 0.2"
+                position="8 -0.9 4"
+                material="color: #3cb4ff; opacity: 0.9">
+      </a-entity>
+
+      <!-- Fishing spot marker (ocean) -->
+      <a-entity id="fishingSpot" position="0 0 -16"
                 geometry="primitive: circle; radius: 2"
-                material="color: #00ffff; opacity: 0.4"></a-entity>
+                material="color: #00ffff; opacity: 0.4">
+      </a-entity>
 
-      <a-entity id="rig" position="0 1.6 5" wasd-controls="acceleration: 40">
-        <a-entity id="camera" camera look-controls="pointerLockEnabled: true"></a-entity>
+      <!-- Player rig (movement + look) -->
+      <a-entity id="rig" position="0 1.6 5" wasd-controls="acceleration: 40" look-controls>
+        <a-entity id="camera" camera></a-entity>
+
+        <!-- Rod in hand (visible when slot 1 selected) -->
+        <a-entity id="rodInHand"
+                  geometry="primitive: box; width: 0.1; height: 1.2; depth: 0.1"
+                  material="color: #c28f5c"
+                  position="0.3 -0.4 -0.7"
+                  rotation="0 0 -40">
+        </a-entity>
+
+        <!-- Level text above player -->
+        <a-entity id="levelText"
+                  text="value: Lv 1; align: center; color: white; width: 4"
+                  position="0 1.2 0">
+        </a-entity>
+
+        <!-- ! marker above head when reeling -->
+        <a-entity id="fishAlert"
+                  text="value: !; align: center; color: white; width: 4"
+                  position="0 1.6 0"
+                  visible="false">
+        </a-entity>
       </a-entity>
     </a-scene>
   </body>
